@@ -1,6 +1,7 @@
 {
 	"name": "sort-strings-to-json",
 	"displayName": "Sort-Strings-To-Json",
+	"publisher": "zeroMaster",
 	"description": "",
 	"version": "0.0.1",
 	"engines": {
@@ -10,14 +11,14 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"onCommand:extension.sortString"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
+				"command": "extension.sortString",
+				"title": "Sort String"
 			}
 		]
 	},
