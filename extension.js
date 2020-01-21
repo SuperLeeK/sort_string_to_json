@@ -42,12 +42,12 @@ function activate(context) {
 				updateFile.splice(updateFile.length - 1, 0, updateText);
 				let spliceFile = updateFile.join('\n')
 
-				fs.writeFileSync(destFileFullPath, spliceFile, 'utf8');
 
 				editor.edit(builder => {
 					let stringPos = editor.selection.active;
 					let startPos = new Position(stringPos.line, stringPos.character)
 					builder.replace(editor.selection, `Strings.${str}`)
+					fs.writeFileSync(destFileFullPath, spliceFile, 'utf8');
 				})
 			})
 		})
