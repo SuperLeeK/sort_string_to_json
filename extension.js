@@ -15,8 +15,8 @@ function activate(context) {
 	if(!editor) return;
 
 	let disposable = vscode.commands.registerCommand('extension.sortString', function () {
-		vscode.window.showInformationMessage('Strings sort Start!');
-		clipboard.readText().then(v => {
+		clipboard.readText()
+		.then(v => {
 			if(!copyFromClipboard) return Promise.reject();
 			return this.sourceText = v
 		})
@@ -25,7 +25,7 @@ function activate(context) {
 			return this.sourceText = selectText;
 		})
 		.then(() => {
-			window.showInputBox()
+			return window.showInputBox()
 			.then(str => {
 				let readfile = fs.readFileSync(destFileFullPath, 'utf8').split('\n').map(v => v.trimRight()).filter(e => e);
 
@@ -34,25 +34,29 @@ function activate(context) {
 					return v
 				})
 
-				if(sourceText.indexOf('"') != 0 && sourceText.indexOf('"') != sourceText.length - 1) {
-					sourceText = `"${sourceText}"`.replace(/\'/gi, '')
+				if(this.sourceText.indexOf('"') != 0 && this.sourceText.indexOf('"') != this.sourceText.length - 1) {
+					this.sourceText = `"${this.sourceText}"`.replace(/\'/gi, '')
 				}
 
-				let updateText = `\t"${str}": ${sourceText}`
+				let updateText = `\t"${str}": ${this.sourceText}`
 				updateFile.splice(updateFile.length - 1, 0, updateText);
-				let spliceFile = updateFile.join('\n')
 
-
-				editor.edit(builder => {
-					let stringPos = editor.selection.active;
-					let startPos = new Position(stringPos.line, stringPos.character)
-					builder.replace(editor.selection, `Strings.${str}`)
-					fs.writeFileSync(destFileFullPath, spliceFile, 'utf8');
-				})
+				return {
+					spliceFile: updateFile.join('\n'), 
+					str: str,
+				};
+			})
+		})
+		.then(({spliceFile, str}) => {
+			editor.edit(builder => {
+				let stringPos = editor.selection.active;
+				let startPos = new Position(stringPos.line, stringPos.character)
+				builder.replace(editor.selection, `Strings.${str}`)
+				fs.writeFileSync(destFileFullPath, spliceFile, 'utf8');
+				vscode.window.showInformationMessage('Data Write Done!');
 			})
 		})
 
-		vscode.window.showInformationMessage('Data Write Done!');
 	});
 
 	context.subscriptions.push(disposable);
