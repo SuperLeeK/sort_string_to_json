@@ -1,6 +1,5 @@
 const vscode = require('vscode');
 const fs     = require('fs');
-// import Settings from './main/settings';
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -10,7 +9,7 @@ function activate(context) {
 	const { copyFromClipboard, destPath, destFileName } = vscode.workspace.getConfiguration("sort-string-2-json", undefined);
 
 
-	let disposable = vscode.commands.registerCommand('extension.sortString', function () {
+	let updateToString = vscode.commands.registerCommand('extension.sortString', function () {
 		let editor = window.activeTextEditor;
 		let editorText = editor.document.getText();
 		let selectText = editor.document.getText(editor.selection);
@@ -28,7 +27,6 @@ function activate(context) {
 			return this.sourceText = v
 		})
 		.catch(err => {
-			console.warn("extension(22) - err:", err)
 			return this.sourceText = selectText;
 		})
 		.then(() => {
@@ -65,10 +63,54 @@ function activate(context) {
 				this.sourceText = null;
 			})
 		})
-
 	});
 
-	context.subscriptions.push(disposable);
+	let checkFromString = vscode.commands.registerCommand('extension.checkString', function () {
+		let editor = window.activeTextEditor;
+		let editorText = editor.document.getText();
+		let selectText = editor.document.getText(editor.selection);
+		this.sourceText = null;
+		let destFileFullPath = `${destPath}/${destFileName}`;
+
+		if(!editor) return;
+		if(editor.selection.isEmpty) {
+      window.showInformationMessage('Need to select any text!!')
+      return;
+    };
+
+		clipboard.readText()
+		.then(clip => {
+			if(!copyFromClipboard) return Promise.reject();
+			return this.sourceText = clip
+		})
+		.catch(err => {
+			return this.sourceText = selectText;
+		})
+		.then(() => {
+			this.sourceText = this.sourceText.replace(/\"/gi, '').replace(/\'/gi, '').replace(/\`/gi, '')
+			let readfiles = fs.readFileSync(destFileFullPath, 'utf8').split('\n').filter(e => !(e.includes('/*') || e.includes('*/'))).filter(line => line.includes(this.sourceText));
+			let quickReadFiles = readfiles.map(v => {
+				return v.replace(':','|split|').split('|split|')[0].trim();
+			})
+			if(readfiles.length < 1) window.showTextDocument('Can not found matched with '+this.sourceText)
+			else {
+				window.showQuickPick(quickReadFiles)
+				.then(pickText => {
+					/** save the clipboard or editor */
+					editor.edit(builder => {
+						let stringPos = editor.selection.active;
+						let startPos = new Position(stringPos.line, stringPos.character)
+						let resultText = `Strings.${pickText.replace(/\"/gi,'')}`;
+						builder.replace(editor.selection, resultText)
+						clipboard.writeText(resultText);
+					})
+				})
+			}
+		})
+	})
+
+	context.subscriptions.push(updateToString);
+	context.subscriptions.push(checkFromString);
 }
 exports.activate = activate;
 
@@ -76,5 +118,6 @@ function deactivate() {}
 
 module.exports = {
 	activate,
-	// deactivate
+	deactivate,
+	// Strings
 }
