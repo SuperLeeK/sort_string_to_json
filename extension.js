@@ -34,6 +34,7 @@ function activate(context) {
 		.then(() => {
 			return window.showInputBox()
 			.then(str => {
+				if(!str) return Promise.reject('noStr');
 				let readfile = fs.readFileSync(destFileFullPath, 'utf8').split('\n').map(v => v.trimRight()).filter(e => e);
 
 				let updateFile = readfile.map(v => {
@@ -60,7 +61,6 @@ function activate(context) {
 				let startPos = new Position(stringPos.line, stringPos.character)
 				builder.replace(editor.selection, `Strings.${str}`)
 				fs.writeFileSync(destFileFullPath, spliceFile, 'utf8');
-				vscode.window.showInformationMessage('Data Write Done!');
 				this.sourceText = null;
 			})
 		})
