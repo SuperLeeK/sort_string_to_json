@@ -3,7 +3,7 @@
 	"displayName": "Sort-Strings-To-Json",
 	"publisher": "zeroMaster",
 	"description": "zeroMaster's second extension project",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"engines": {
 		"vscode": "^1.41.0"
 	},
