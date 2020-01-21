@@ -17,7 +17,11 @@ function activate(context) {
 		this.sourceText = null;
 		let destFileFullPath = `${destPath}/${destFileName}`;
 		if(!editor) return;
-		
+		if(editor.selection.isEmpty) {
+      window.showInformationMessage('Need to select any text!!')
+      return;
+    };
+
 		clipboard.readText()
 		.then(v => {
 			if(!copyFromClipboard) return Promise.reject();
@@ -38,7 +42,7 @@ function activate(context) {
 				})
 
 				if(this.sourceText.indexOf('"') != 0 && this.sourceText.indexOf('"') != this.sourceText.length - 1) {
-					this.sourceText = `"${this.sourceText}"`.replace(/\'/gi, '')
+					this.sourceText = `"${this.sourceText}"`.replace(/\'/gi, '').replace(/\`/gi, '')
 				}
 
 				let updateText = `\t"${str}": ${this.sourceText}`
