@@ -29,7 +29,7 @@ function activate(context) {
 
 			window.showInputBox()
 			.then(str => {
-				let readfile = fs.readFileSync(destFileFullPath, 'utf8').split('\n').map(v => v.trimRight()).filter(e => e);
+				let readfile = fs.readFileSync(destFileFullPath, 'utf8').split('\n').map(v => v.trimRight());
 
 				let updateFile = readfile.map(v => {
 					if(!v.includes('{') && !v.includes('}') && v[v.length - 1] != ',') return `${v},`
