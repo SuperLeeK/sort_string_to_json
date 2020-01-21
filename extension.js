@@ -8,13 +8,16 @@ const fs     = require('fs');
 function activate(context) {
 	const { window, commands, env: { clipboard }, Position } = vscode;
 	const { copyFromClipboard, destPath, destFileName } = vscode.workspace.getConfiguration("sort-string-2-json", undefined);
-	let editor = window.activeTextEditor;
-	let editorText = editor.document.getText();
-	let selectText = editor.document.getText(editor.selection);
-	let destFileFullPath = `${destPath}/${destFileName}`;
-	if(!editor) return;
+
 
 	let disposable = vscode.commands.registerCommand('extension.sortString', function () {
+		let editor = window.activeTextEditor;
+		let editorText = editor.document.getText();
+		let selectText = editor.document.getText(editor.selection);
+		this.sourceText = null;
+		let destFileFullPath = `${destPath}/${destFileName}`;
+		if(!editor) return;
+		
 		clipboard.readText()
 		.then(v => {
 			if(!copyFromClipboard) return Promise.reject();
@@ -54,6 +57,7 @@ function activate(context) {
 				builder.replace(editor.selection, `Strings.${str}`)
 				fs.writeFileSync(destFileFullPath, spliceFile, 'utf8');
 				vscode.window.showInformationMessage('Data Write Done!');
+				this.sourceText = null;
 			})
 		})
 
