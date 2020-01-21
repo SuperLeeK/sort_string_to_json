@@ -35,6 +35,7 @@ function activate(context) {
 			return window.showInputBox()
 			.then(str => {
 				if(!str) return Promise.reject('noStr');
+				str = str.replace(/ /gi, '_')
 				let readfile = fs.readFileSync(destFileFullPath, 'utf8').split('\n').map(v => v.trimRight()).filter(e => e);
 
 				let updateFile = readfile.map(v => {
