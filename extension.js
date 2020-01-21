@@ -17,19 +17,17 @@ function activate(context) {
 	let disposable = vscode.commands.registerCommand('extension.sortString', function () {
 		vscode.window.showInformationMessage('Strings sort Start!');
 		clipboard.readText().then(v => {
+			if(!copyFromClipboard) return Promise.reject();
 			return this.sourceText = v
 		})
 		.catch(err => {
 			console.warn("extension(22) - err:", err)
-		})
-		.then(() => {
 			return this.sourceText = selectText;
 		})
 		.then(() => {
-
 			window.showInputBox()
 			.then(str => {
-				let readfile = fs.readFileSync(destFileFullPath, 'utf8').split('\n').map(v => v.trimRight());
+				let readfile = fs.readFileSync(destFileFullPath, 'utf8').split('\n').map(v => v.trimRight()).filter(e => e);
 
 				let updateFile = readfile.map(v => {
 					if(!v.includes('{') && !v.includes('}') && v[v.length - 1] != ',') return `${v},`
@@ -53,8 +51,6 @@ function activate(context) {
 				})
 			})
 		})
-
-
 
 		vscode.window.showInformationMessage('Data Write Done!');
 	});
