@@ -2,7 +2,7 @@
 	"name": "sort-strings-to-json",
 	"displayName": "Sort-Strings-To-Json",
 	"publisher": "zeroMaster",
-	"description": "",
+	"description": "zeroMaster's second extension project",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.41.0"
@@ -20,10 +20,37 @@
 				"command": "extension.sortString",
 				"title": "Sort String"
 			}
-		]
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Strings Sort to Json",
+			"properties": {
+				"sort-string-2-json.copyFromClipboard": {
+					"type": "boolean",
+					"default": true,
+					"description": "Using clipboard's value",
+					"scope": "window"
+				},
+				"sort-string-2-json.destPath": {
+					"type": "string",
+					"default": "..",
+					"description": "Set json file path",
+					"scope": "window"
+				},
+				"sort-string-2-json.destFileName": {
+					"type": "string",
+					"default": "Strings.ko.json",
+					"description": "Set json file name",
+					"scope": "window"
+				}
+			}
+		}
 	},
 	"scripts": {
-		"test": "node ./test/runTest.js"
+		"main": "node ./main/runTest.js"
+	},
+	"repository": {
+		"url": "https://github.com/SuperLeeK/sort_string_to_json"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
@@ -35,5 +62,8 @@
 		"mocha": "^6.2.2",
 		"typescript": "^3.6.4",
 		"vscode-test": "^1.2.2"
+	},
+	"dependencies": {
+		"fs": "0.0.1-security"
 	}
 }
