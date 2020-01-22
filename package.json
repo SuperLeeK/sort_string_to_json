@@ -1,5 +1,5 @@
 {
-	"name": "sort-strings-to-json",
+	"name": "update-string-to-string-id",
 	"displayName": "Update-String-To-String-Id",
 	"publisher": "zeroMaster",
 	"description": "zeroMaster's second extension project\n Update String To String ID",
@@ -30,25 +30,25 @@
 			"type": "object",
 			"title": "Strings Sort to Json",
 			"properties": {
-				"sort-string-2-json.isStringFromClipboard": {
+				"update-string-to-string-id.isStringFromClipboard": {
 					"type": "boolean",
 					"default": true,
 					"description": "Using clipboard's value",
 					"scope": "window"
 				},
-				"sort-string-2-json.destPath": {
+				"update-string-to-string-id.destPath": {
 					"type": "string",
 					"default": "..",
 					"description": "Set json file path",
 					"scope": "window"
 				},
-				"sort-string-2-json.destFileName": {
+				"update-string-to-string-id.destFileName": {
 					"type": "string",
 					"default": "Strings.ko.json",
 					"description": "Set json file name",
 					"scope": "window"
 				},
-				"sort-string-2-json.isAccuratelySearch": {
+				"update-string-to-string-id.isAccuratelySearch": {
 					"type": "boolean",
 					"default": true,
 					"description": "Search by includes or exactly match",

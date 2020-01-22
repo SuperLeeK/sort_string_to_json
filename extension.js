@@ -6,7 +6,7 @@ const fs     = require('fs');
  */
 function activate(context) {
 	const { window, commands, env: { clipboard }, Position } = vscode;
-	const { isStringFromClipboard, destPath, destFileName, isAccuratelySearch } = vscode.workspace.getConfiguration("sort-string-2-json", undefined);
+	const { isStringFromClipboard, destPath, destFileName, isAccuratelySearch } = vscode.workspace.getConfiguration("update-string-to-string-id", undefined);
 
 
 	let updateToString = vscode.commands.registerCommand('extension.updateStringToStringId', function () {
