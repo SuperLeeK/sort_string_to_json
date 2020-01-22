@@ -19,7 +19,7 @@
 		"commands": [
 			{
 				"command": "extension.updateStringToStringId",
-				"title": "Sort String"
+				"title": "Update String"
 			},
 			{
 				"command": "extension.checkStringIdFromString",
