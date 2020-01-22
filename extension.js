@@ -98,7 +98,7 @@ function activate(context) {
 			let quickReadFiles = readfiles.map(v => {
 				return v.replace(':','|split|').split('|split|')[0].trim();
 			})
-			if(readfiles.length < 1) window.showInformationMessage(`Can not found matched by ${this.sourceText}`)
+			if(readfiles.length < 1) window.showInformationMessage(`Can not found matched with "${this.sourceText}"`)
 			else {
 				window.showQuickPick(quickReadFiles)
 				.then(pickText => {
@@ -108,7 +108,7 @@ function activate(context) {
 						let startPos = new Position(stringPos.line, stringPos.character)
 						let resultText = `Strings.${pickText.replace(/\"/gi,'')}`;
 						builder.replace(editor.selection, resultText)
-						clipboard.writeText(resultText);
+						// clipboard.writeText(resultText);
 					})
 				})
 			}
