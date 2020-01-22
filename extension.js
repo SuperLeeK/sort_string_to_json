@@ -6,10 +6,10 @@ const fs     = require('fs');
  */
 function activate(context) {
 	const { window, commands, env: { clipboard }, Position } = vscode;
-	const { copyFromClipboard, destPath, destFileName, exactlyMatch } = vscode.workspace.getConfiguration("sort-string-2-json", undefined);
+	const { isStringFromClipboard, destPath, destFileName, isAccuratelySearch } = vscode.workspace.getConfiguration("sort-string-2-json", undefined);
 
 
-	let updateToString = vscode.commands.registerCommand('extension.sortString', function () {
+	let updateToString = vscode.commands.registerCommand('extension.updateStringToStringId', function () {
 		let editor = window.activeTextEditor;
 		let editorText = editor.document.getText();
 		let selectText = editor.document.getText(editor.selection);
@@ -23,7 +23,7 @@ function activate(context) {
 
 		clipboard.readText()
 		.then(v => {
-			if(!copyFromClipboard) return Promise.reject();
+			if(!isStringFromClipboard) return Promise.reject();
 			return this.sourceText = v
 		})
 		.catch(err => {
@@ -65,7 +65,7 @@ function activate(context) {
 		})
 	});
 
-	let checkFromString = vscode.commands.registerCommand('extension.checkString', function () {
+	let checkFromString = vscode.commands.registerCommand('extension.checkStringIdFromString', function () {
 		let editor = window.activeTextEditor;
 		let editorText = editor.document.getText();
 		let selectText = editor.document.getText(editor.selection);
@@ -80,7 +80,7 @@ function activate(context) {
 
 		clipboard.readText()
 		.then(clip => {
-			if(!copyFromClipboard) return Promise.reject();
+			if(!isStringFromClipboard) return Promise.reject();
 			return this.sourceText = clip
 		})
 		.catch(err => {
@@ -89,7 +89,7 @@ function activate(context) {
 		.then(() => {
 			this.sourceText = this.sourceText.replace(/\"/gi, '').replace(/\'/gi, '').replace(/\`/gi, '')
 			let readfiles = fs.readFileSync(destFileFullPath, 'utf8').split('\n').filter(e => !(e.includes('/*') || e.includes('*/'))).filter(line => {
-				if(exactlyMatch) {
+				if(isAccuratelySearch) {
 					if((line.replace(':','|split|').split('|split|')[1] || '').trim().replace(/\"/gi,'').replace(/\,/gi,'') == this.sourceText) return true;
 				} else {
 					return line.includes(this.sourceText);

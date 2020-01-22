@@ -1,8 +1,8 @@
 {
 	"name": "sort-strings-to-json",
-	"displayName": "Sort-Strings-To-Json",
+	"displayName": "Update-String-To-String-Id",
 	"publisher": "zeroMaster",
-	"description": "zeroMaster's second extension project",
+	"description": "zeroMaster's second extension project\n Update String To String ID",
 	"version": "0.1.5",
 	"engines": {
 		"vscode": "^1.41.0"
@@ -11,18 +11,18 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.sortString",
-		"onCommand:extension.checkString"
+		"onCommand:extension.updateStringToStringId",
+		"onCommand:extension.checkStringIdFromString"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.sortString",
+				"command": "extension.updateStringToStringId",
 				"title": "Sort String"
 			},
 			{
-				"command": "extension.checkString",
+				"command": "extension.checkStringIdFromString",
 				"title": "Check String"
 			}
 		],
@@ -30,7 +30,7 @@
 			"type": "object",
 			"title": "Strings Sort to Json",
 			"properties": {
-				"sort-string-2-json.copyFromClipboard": {
+				"sort-string-2-json.isStringFromClipboard": {
 					"type": "boolean",
 					"default": true,
 					"description": "Using clipboard's value",
@@ -48,7 +48,7 @@
 					"description": "Set json file name",
 					"scope": "window"
 				},
-				"sort-string-2-json.exactlyMatch": {
+				"sort-string-2-json.isAccuratelySearch": {
 					"type": "boolean",
 					"default": true,
 					"description": "Search by includes or exactly match",

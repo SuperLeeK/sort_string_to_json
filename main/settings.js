@@ -2,9 +2,9 @@ class Settings {
   constructor() {
 		const configuration = vscode.workspace.getConfiguration("sort-string-2-json", undefined);
 
-    this.copyType = configuration.get("copyFromClipboard");
-    if (typeof this.copyType !== "boolean") {
-        throw new Error("copyFromClipboard is not a boolean");
+    this.isStringFromClipboard = configuration.get("isStringFromClipboard");
+    if (typeof this.isStringFromClipboard !== "boolean") {
+        throw new Error("isStringFromClipboard is not a boolean");
     }
     this.destPath = configuration.get("destPath");
     if (typeof this.destPath !== "string") {
@@ -14,9 +14,9 @@ class Settings {
     if (typeof this.destFileName !== "string") {
         throw new Error("destFileName is not a string");
     }
-    this.exactlyMatch = configuration.get("exactlyMatch");
-    if (typeof this.exactlyMatch !== "boolean") {
-        throw new Error("exactlyMatch is not a boolean");
+    this.isAccuratelySearch = configuration.get("isAccuratelySearch");
+    if (typeof this.isAccuratelySearch !== "boolean") {
+        throw new Error("isAccuratelySearch is not a boolean");
     }
   }
 }
