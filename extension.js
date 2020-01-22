@@ -89,8 +89,12 @@ function activate(context) {
 		.then(() => {
 			this.sourceText = this.sourceText.replace(/\"/gi, '').replace(/\'/gi, '').replace(/\`/gi, '')
 			let readfiles = fs.readFileSync(destFileFullPath, 'utf8').split('\n').filter(e => !(e.includes('/*') || e.includes('*/'))).filter(line => {
-				if(exactlyMatch && line == this.sourceText) return true;
-				return line.includes(this.sourceText);
+				if(exactlyMatch) {
+					console.log("extension(93) - (line.replace(':','|split|').split('|split|')[1] || '').trim():", (line.replace(':','|split|').split('|split|')[1] || '').trim())
+					if((line.replace(':','|split|').split('|split|')[1] || '').trim().replace(/\"/gi,'').replace(/\,/gi,'') == this.sourceText) return true;
+				} else {
+					return line.includes(this.sourceText);
+				}
 			});
 			let quickReadFiles = readfiles.map(v => {
 				return v.replace(':','|split|').split('|split|')[0].trim();
