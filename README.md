@@ -76,5 +76,20 @@ Add vscode showInformation message when can't search checkStringIdFromString's r
 #### v0.1.6
 Rename UpdateStringToStringId from sort-string-to-json
 
+#### v0.1.8
+Do not save clipboard when check function to update
+
+#### v0.2.0
+If selectText is literal string and using ${value}, auto changing by configuration's set word [ My workspace type ]
+- when use literal grammer check and use by new configuration
+---
+
+# Coming Soon
+
+#### auto recommended string id according to new configuration
+  - lastFilePath / fileName || className / symbolName / ...
+
+---
+
 # Developer Note
 How can I rename extension project!!!

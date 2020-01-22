@@ -14,6 +14,7 @@ function activate(context) {
 		let editorText = editor.document.getText();
 		let selectText = editor.document.getText(editor.selection);
 		this.sourceText = null;
+		this.sourceArr = [];
 		let destFileFullPath = `${destPath}/${destFileName}`;
 		if(!editor) return;
 		if(editor.selection.isEmpty) {
@@ -35,9 +36,16 @@ function activate(context) {
 				if(!str) return Promise.reject('noStr');
 				str = str.replace(/ /gi, '_')
 				let readfile = fs.readFileSync(destFileFullPath, 'utf8').split('\n').map(v => v.trimRight()).filter(e => e);
+				this.sourceText = this.sourceText.split('${').map(v=>v.split('}')).flat().map((v,i) => {
+					if((i+1)%2 == 0) {
+						this.sourceArr.push(v)
+						return `{\%${Math.round(i/2)}}`
+					}
+					return v
+				}).join('');
 
-				let updateFile = readfile.map(v => {
-					if(!v.includes('{') && !v.includes('}') && v[v.length - 1] != ',' && !v.includes('/*') && !v.includes('*/')) return `${v},`
+				let updateFile = readfile.map((v, i) => {
+					if(i != 0 && i != readfile.length - 1 && v[v.length - 1] != ',' && !v.includes('/*') && !v.includes('*/')) return `${v},`
 					return v
 				})
 
@@ -58,7 +66,7 @@ function activate(context) {
 			editor.edit(builder => {
 				let stringPos = editor.selection.active;
 				let startPos = new Position(stringPos.line, stringPos.character)
-				builder.replace(editor.selection, `Strings.${str}`)
+				builder.replace(editor.selection, this.sourceArr.length > 0 ? `Strings.${str}.format(${this.sourceArr.join(',')})` : `Strings.${str}`)
 				fs.writeFileSync(destFileFullPath, spliceFile, 'utf8');
 				this.sourceText = null;
 			})
