@@ -92,7 +92,7 @@ function activate(context) {
 			let quickReadFiles = readfiles.map(v => {
 				return v.replace(':','|split|').split('|split|')[0].trim();
 			})
-			if(readfiles.length < 1) window.showTextDocument('Can not found matched with '+this.sourceText)
+			if(readfiles.length < 1) window.showInformationMessage(`Can not found matched with ${this.sourceText}`)
 			else {
 				window.showQuickPick(quickReadFiles)
 				.then(pickText => {
