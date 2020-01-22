@@ -37,7 +37,7 @@ function activate(context) {
 				let readfile = fs.readFileSync(destFileFullPath, 'utf8').split('\n').map(v => v.trimRight()).filter(e => e);
 
 				let updateFile = readfile.map(v => {
-					if(!v.includes('{') && !v.includes('}') && v[v.length - 1] != ',') return `${v},`
+					if(!v.includes('{') && !v.includes('}') && v[v.length - 1] != ',' && !v.includes('/*') && !v.includes('*/')) return `${v},`
 					return v
 				})
 
@@ -90,7 +90,6 @@ function activate(context) {
 			this.sourceText = this.sourceText.replace(/\"/gi, '').replace(/\'/gi, '').replace(/\`/gi, '')
 			let readfiles = fs.readFileSync(destFileFullPath, 'utf8').split('\n').filter(e => !(e.includes('/*') || e.includes('*/'))).filter(line => {
 				if(exactlyMatch) {
-					console.log("extension(93) - (line.replace(':','|split|').split('|split|')[1] || '').trim():", (line.replace(':','|split|').split('|split|')[1] || '').trim())
 					if((line.replace(':','|split|').split('|split|')[1] || '').trim().replace(/\"/gi,'').replace(/\,/gi,'') == this.sourceText) return true;
 				} else {
 					return line.includes(this.sourceText);
