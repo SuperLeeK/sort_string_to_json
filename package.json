@@ -47,6 +47,12 @@
 					"default": "Strings.ko.json",
 					"description": "Set json file name",
 					"scope": "window"
+				},
+				"sort-string-2-json.exactlyMatch": {
+					"type": "boolean",
+					"default": true,
+					"description": "Search by includes or exactly match",
+					"scope": "window"
 				}
 			}
 		}

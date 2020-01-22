@@ -6,7 +6,7 @@ const fs     = require('fs');
  */
 function activate(context) {
 	const { window, commands, env: { clipboard }, Position } = vscode;
-	const { copyFromClipboard, destPath, destFileName } = vscode.workspace.getConfiguration("sort-string-2-json", undefined);
+	const { copyFromClipboard, destPath, destFileName, exactlyMatch } = vscode.workspace.getConfiguration("sort-string-2-json", undefined);
 
 
 	let updateToString = vscode.commands.registerCommand('extension.sortString', function () {
@@ -88,11 +88,14 @@ function activate(context) {
 		})
 		.then(() => {
 			this.sourceText = this.sourceText.replace(/\"/gi, '').replace(/\'/gi, '').replace(/\`/gi, '')
-			let readfiles = fs.readFileSync(destFileFullPath, 'utf8').split('\n').filter(e => !(e.includes('/*') || e.includes('*/'))).filter(line => line.includes(this.sourceText));
+			let readfiles = fs.readFileSync(destFileFullPath, 'utf8').split('\n').filter(e => !(e.includes('/*') || e.includes('*/'))).filter(line => {
+				if(exactlyMatch && line == this.sourceText) return true;
+				return line.includes(this.sourceText);
+			});
 			let quickReadFiles = readfiles.map(v => {
 				return v.replace(':','|split|').split('|split|')[0].trim();
 			})
-			if(readfiles.length < 1) window.showInformationMessage(`Can not found matched with ${this.sourceText}`)
+			if(readfiles.length < 1) window.showInformationMessage(`Can not found matched by ${this.sourceText}`)
 			else {
 				window.showQuickPick(quickReadFiles)
 				.then(pickText => {
