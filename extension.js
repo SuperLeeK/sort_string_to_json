@@ -6,7 +6,7 @@ const fs     = require('fs');
  */
 function activate(context) {
 	const { window, commands, env: { clipboard }, Position } = vscode;
-	const { isStringFromClipboard, destPath, destFileName, isAccuratelySearch } = vscode.workspace.getConfiguration("update-string-to-string-id", undefined);
+	const { destPath, destFileName, isAccuratelySearch, toStringCase } = vscode.workspace.getConfiguration("update-string-to-string-id", undefined);
 
 
 	let updateToString = vscode.commands.registerCommand('extension.updateStringToStringId', function () {
@@ -14,6 +14,7 @@ function activate(context) {
 		let editorText = editor.document.getText();
 		let selectText = editor.document.getText(editor.selection);
 		this.sourceText = null;
+		this.sourceClip = null;
 		this.sourceArr = [];
 		let destFileFullPath = `${destPath}/${destFileName}`;
 		if(!editor) return;
@@ -23,18 +24,20 @@ function activate(context) {
     };
 
 		clipboard.readText()
-		.then(v => {
-			if(!isStringFromClipboard) return Promise.reject();
-			return this.sourceText = v
-		})
-		.catch(err => {
-			return this.sourceText = selectText;
+		.then(clip => {
+			this.sourceClip = clip
+			this.sourceText = selectText;
+			return Promise.resolve();
 		})
 		.then(() => {
-			return window.showInputBox()
+			return window.showInputBox({value: this.sourceClip})
 			.then(str => {
 				if(!str) return Promise.reject('noStr');
-				str = str.toLowerCase().replace(/ /gi, '_')
+				switch (toStringCase) {
+					case "toLowerCase": { str = str.toLowerCase().replace(/ /gi, '_'); } break;
+					case "toUpperCase": { str = str.toUpperCase().replace(/ /gi, '_'); } break;
+					case "none":        { str = str.replace(/ /gi, '_');               } break;
+				}
 				let readfile = fs.readFileSync(destFileFullPath, 'utf8').split('\n').map(v => v.trimRight()).filter(e => e);
 				this.sourceText = this.sourceText.split('${').map(v=>v.split('}')).flat().map((v,i) => {
 					if((i+1)%2 == 0) {
@@ -78,6 +81,7 @@ function activate(context) {
 		let editorText = editor.document.getText();
 		let selectText = editor.document.getText(editor.selection);
 		this.sourceText = null;
+		this.sourceClip = null;
 		let destFileFullPath = `${destPath}/${destFileName}`;
 
 		if(!editor) return;
@@ -88,11 +92,9 @@ function activate(context) {
 
 		clipboard.readText()
 		.then(clip => {
-			if(!isStringFromClipboard) return Promise.reject();
-			return this.sourceText = clip
-		})
-		.catch(err => {
-			return this.sourceText = selectText;
+			this.sourceClip = clip;
+			this.sourceText = selectText
+			return Promise.resolve()
 		})
 		.then(() => {
 			this.sourceText = this.sourceText.replace(/\"/gi, '').replace(/\'/gi, '').replace(/\`/gi, '')
@@ -116,15 +118,35 @@ function activate(context) {
 						let startPos = new Position(stringPos.line, stringPos.character)
 						let resultText = `Strings.${pickText.replace(/\"/gi,'')}`;
 						builder.replace(editor.selection, resultText)
-						// clipboard.writeText(resultText);
 					})
 				})
 			}
 		})
 	})
 
+
+
+	let checkToString = vscode.commands.registerCommand('extension.checkStringIdToString', function () {
+		let editor = window.activeTextEditor;
+		let editorText = editor.document.getText();
+		let selectText = editor.document.getText(editor.selection);
+		this.sourceText = selectText.replace('Strings.', '');
+		this.sourceClip = null;
+		let destFileFullPath = `${destPath}/${destFileName}`;
+
+		if(!editor) return;
+		if(editor.selection.isEmpty) {
+      window.showInformationMessage('Need to select any string id!!')
+      return;
+		};
+		
+		let [ matchedKey ] = fs.readFileSync(destFileFullPath, 'utf8').split('\n').filter(e => !(e.includes('/*') || e.includes('*/'))).filter(line => (line.replace(':','|split|').split('|split|')[0] || '').trim().replace(/\"/gi,'').replace(/\,/gi,'') == this.sourceText);
+		window.showInformationMessage(`\n\n\t\t\t\t${matchedKey.replace(':','|split|').split('|split|')[1].replace(/\"/gi,'')}`, {modal: true})
+	})
+
 	context.subscriptions.push(updateToString);
 	context.subscriptions.push(checkFromString);
+	context.subscriptions.push(checkToString);
 }
 exports.activate = activate;
 

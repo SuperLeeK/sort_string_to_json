@@ -1,11 +1,7 @@
 class Settings {
   constructor() {
-		const configuration = vscode.workspace.getConfiguration("sort-string-2-json", undefined);
+		const configuration = vscode.workspace.getConfiguration("update-string-to-string-id", undefined);
 
-    this.isStringFromClipboard = configuration.get("isStringFromClipboard");
-    if (typeof this.isStringFromClipboard !== "boolean") {
-        throw new Error("isStringFromClipboard is not a boolean");
-    }
     this.destPath = configuration.get("destPath");
     if (typeof this.destPath !== "string") {
         throw new Error("destPath is not a string");
@@ -17,6 +13,10 @@ class Settings {
     this.isAccuratelySearch = configuration.get("isAccuratelySearch");
     if (typeof this.isAccuratelySearch !== "boolean") {
         throw new Error("isAccuratelySearch is not a boolean");
+    }
+    this.toStringCase = configuration.get("toStringCase");
+    if (typeof this.toStringCase !== "string") {
+        throw new Error("toStringCase is not a string");
     }
   }
 }

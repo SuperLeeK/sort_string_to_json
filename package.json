@@ -12,7 +12,8 @@
 	],
 	"activationEvents": [
 		"onCommand:extension.updateStringToStringId",
-		"onCommand:extension.checkStringIdFromString"
+		"onCommand:extension.checkStringIdFromString",
+		"onCommand:extension.checkStringIdToString"
 	],
 	"main": "./extension.js",
 	"contributes": {
@@ -24,18 +25,16 @@
 			{
 				"command": "extension.checkStringIdFromString",
 				"title": "Check String"
+			},
+			{
+				"command": "extension.checkStringIdToString",
+				"title": "Check String Id"
 			}
 		],
 		"configuration": {
 			"type": "object",
 			"title": "Strings Sort to Json",
 			"properties": {
-				"update-string-to-string-id.isStringFromClipboard": {
-					"type": "boolean",
-					"default": true,
-					"description": "Using clipboard's value",
-					"scope": "window"
-				},
 				"update-string-to-string-id.destPath": {
 					"type": "string",
 					"default": "..",
@@ -52,6 +51,17 @@
 					"type": "boolean",
 					"default": true,
 					"description": "Search by includes or exactly match",
+					"scope": "window"
+				},
+				"update-string-to-string-id.toStringCase": {
+					"type": "string",
+					"default": "none",
+					"enum": [
+						"toLowerCase",
+						"toUpperCase",
+						"none"
+					],
+					"description": "when update string to stringId, stringId's string type setting",
 					"scope": "window"
 				}
 			}

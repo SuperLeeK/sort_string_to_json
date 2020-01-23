@@ -80,8 +80,18 @@ Rename UpdateStringToStringId from sort-string-to-json
 Do not save clipboard when check function to update
 
 #### v0.2.0
-If selectText is literal string and using ${value}, auto changing by configuration's set word [ My workspace type ]
+If selectText is literal string and using ${value}, auto changing by configuration's set word [ MIH localize type ]
 - when use literal grammer check and use by new configuration
+
+#### v0.2.1
+Add toStringCase 
+  - toUpperCase
+  - toLowerCase
+  - none
+
+#### v0.2.2
+Add check the string [ MIH localize type ] with modal
+
 ---
 
 # Coming Soon
