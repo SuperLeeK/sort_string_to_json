@@ -139,9 +139,9 @@ function activate(context) {
       window.showInformationMessage('Need to select any string id!!')
       return;
 		};
-		
+
 		let [ matchedKey ] = fs.readFileSync(destFileFullPath, 'utf8').split('\n').filter(e => !(e.includes('/*') || e.includes('*/'))).filter(line => (line.replace(':','|split|').split('|split|')[0] || '').trim().replace(/\"/gi,'').replace(/\,/gi,'') == this.sourceText);
-		window.showInformationMessage(`\n\n\t\t\t\t${matchedKey.replace(':','|split|').split('|split|')[1].replace(/\"/gi,'')}`, {modal: true})
+		window.showInformationMessage(`\n\n\t\t\t\t${matchedKey.replace(':','|split|').split('|split|')[1].replace(/\"/gi,'').replace(/\,/gi,'')}`, {modal: true})
 	})
 
 	context.subscriptions.push(updateToString);
