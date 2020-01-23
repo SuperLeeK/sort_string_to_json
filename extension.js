@@ -34,7 +34,7 @@ function activate(context) {
 			return window.showInputBox()
 			.then(str => {
 				if(!str) return Promise.reject('noStr');
-				str = str.replace(/ /gi, '_')
+				str = str.toLowerCase().replace(/ /gi, '_')
 				let readfile = fs.readFileSync(destFileFullPath, 'utf8').split('\n').map(v => v.trimRight()).filter(e => e);
 				this.sourceText = this.sourceText.split('${').map(v=>v.split('}')).flat().map((v,i) => {
 					if((i+1)%2 == 0) {
