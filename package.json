@@ -3,7 +3,7 @@
 	"displayName": "Update-String-To-String-Id",
 	"publisher": "zeroMaster",
 	"description": "zeroMaster's second extension project\n Update String To String ID",
-	"version": "0.2.6",
+	"version": "0.2.4",
 	"engines": {
 		"vscode": "^1.41.0"
 	},
