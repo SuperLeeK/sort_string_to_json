@@ -149,7 +149,7 @@ function activate(context) {
 		let editor = window.activeTextEditor;
 		let editorText = editor.document.getText();
 		let selectTexts = editor.document.getText(editor.selection);
-		let [ functional, selectText ] = selectTexts.replace(/\;/ig,'').split('=').trim(v => v.trim());
+		let [ functional, selectText ] = selectTexts.replace(/\;/ig,'').split('=').map(v => v.trim());
 
 		// let selectText = editor.document.getText(editor.selection);
 		this.sourceText = null;
