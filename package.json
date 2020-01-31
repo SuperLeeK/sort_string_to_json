@@ -13,8 +13,7 @@
 	"activationEvents": [
 		"onCommand:extension.updateStringToStringId",
 		"onCommand:extension.checkStringIdFromString",
-		"onCommand:extension.checkStringIdToString",
-		"onCommand:extension.updateTitleToStringId"
+		"onCommand:extension.checkStringIdToString"
 	],
 	"main": "./extension.js",
 	"contributes": {
@@ -30,10 +29,6 @@
 			{
 				"command": "extension.checkStringIdToString",
 				"title": "Check String Id"
-			},
-			{
-				"command": "extension.updateTitleToStringId",
-				"title": "Update Title String Id"
 			}
 		],
 		"configuration": {
