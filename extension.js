@@ -99,6 +99,8 @@ function activate(context) {
       window.showInformationMessage('Need to select any text!!')
       return;
     };
+		let index = 1;
+		selectText = selectText.replace(/\$\{(.)+?\}/gi,(searched, ...args) => `{%${index++}}` );
 
 		clipboard.readText()
 		.then(clip => {
@@ -107,7 +109,8 @@ function activate(context) {
 			return Promise.resolve()
 		})
 		.then(() => {
-			this.sourceText = this.sourceText.replace(/\"/gi, '').replace(/\'/gi, '').replace(/\`/gi, '')
+			if(this.sourceText.includes('`')) this.sourceText = this.sourceText.replace(/\`/gi, '').replace(/\$\{(.)\}/gi,(searched) => { return searched.replace('$','').replace('{','{%') } )
+			else this.sourceText = this.sourceText.replace(/\"/gi, '').replace(/\'/gi, '').replace(/\$\{(.)\}/gi,(searched) => { return searched.replace('$','').replace('{','{%') } )
 			let readfiles = fs.readFileSync(destFileFullPath, 'utf8').split('\n').filter(e => !(e.includes('/*') || e.includes('*/'))).filter(line => {
 				if(isAccuratelySearch) {
 					if((line.replace(':','|split|').split('|split|')[1] || '').trim().replace(/\"/gi,'').replace(/\,/gi,'') == this.sourceText) return true;
