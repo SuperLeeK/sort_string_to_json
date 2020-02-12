@@ -6,9 +6,9 @@ const fs     = require('fs');
  */
 function activate(context) {
 	const { window, commands, env: { clipboard }, Position } = vscode;
-	const { destPath, destFileName, isAccuratelySearch, toStringCase } = vscode.workspace.getConfiguration("update-string-to-string-id", undefined);
+	const { destPath, destFileName, isAccuratelySearch, toStringCase, reservedWords } = vscode.workspace.getConfiguration("update-string-to-string-id", undefined);
 
-
+	/** Update String */
 	let updateToString = vscode.commands.registerCommand('extension.updateStringToStringId', function () {
 		let editor = window.activeTextEditor;
 		let editorText = editor.document.getText();
@@ -33,11 +33,20 @@ function activate(context) {
 			return window.showInputBox({value: this.sourceClip})
 			.then(str => {
 				if(!str) return Promise.reject('noStr');
+
+				if(reservedWords.length > 0) {
+					reservedWords.filter(({source, target, isAll}) => {
+						if(isAll) str = str.split(source).join(target);
+						else 			str = str.replace(source, target);
+					})
+				}
+
 				switch (toStringCase) {
 					case "toLowerCase": { str = str.toLowerCase().replace(/ /gi, '_'); } break;
 					case "toUpperCase": { str = str.toUpperCase().replace(/ /gi, '_'); } break;
 					case "none":        { str = str.replace(/ /gi, '_');               } break;
 				}
+				str = str.split('_').filter(e=>e).join('_');
 				let readfile = fs.readFileSync(destFileFullPath, 'utf8').split('\n').map(v => v.trimRight()).filter(e => e);
 				this.sourceText = this.sourceText.split('${').map(v=>v.split('}')).flat().map((v,i) => {
 					if((i+1)%2 == 0) {
@@ -76,6 +85,7 @@ function activate(context) {
 		})
 	});
 
+	/** Check String */
 	let checkFromString = vscode.commands.registerCommand('extension.checkStringIdFromString', function () {
 		let editor = window.activeTextEditor;
 		let editorText = editor.document.getText();
@@ -124,8 +134,7 @@ function activate(context) {
 		})
 	})
 
-
-
+	/** Check String Id */
 	let checkToString = vscode.commands.registerCommand('extension.checkStringIdToString', function () {
 		let editor = window.activeTextEditor;
 		let editorText = editor.document.getText();

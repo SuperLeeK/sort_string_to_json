@@ -42,7 +42,7 @@
       example: true/false,
       default: true
     },
-    toString: {
+    toStringCase: {
       example: 'toLowerCase',
       default: 'none',
       enum: [
@@ -51,6 +51,16 @@
         'none'
       ],
       *required: reload
+    },
+    reservedWords": {
+      example: [
+        {
+          "source": "deft",
+          "target": "default_title",
+          "isAll": true
+        }
+      ],
+      default: '',
     }
   }
 ```
@@ -103,6 +113,22 @@
 #### v0.2.2
 > Add check the string with modal
 
+#### v0.2.3
+> Now when you update string to string id
+> you can reserved words at settings.json
+> Then using when you using inputBox
+
+#### v0.2.4
+> When you use reservedWords
+> Now we support regEx grammer's all
+> if you want, just add settings.json to isAll: true
+
+#### v0.2.5
+> If you did mistake string id's last string is space
+> Now we remove space string at last string
+> Ex)
+> prev : 'awe some project ' => 'awe_some_project_'
+> now  : 'awe some project ' => 'awe_some_project'
 ---
 
 # Coming Soon

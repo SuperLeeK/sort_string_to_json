@@ -63,6 +63,12 @@
 					],
 					"description": "when update string to stringId, stringId's string type setting",
 					"scope": "window"
+				},
+				"update-string-to-string-id.reservedWords": {
+					"type": "array",
+					"default": "",
+					"description": "when you wanna use reserved words for prefix/suffix",
+					"scope": "window"
 				}
 			}
 		}
