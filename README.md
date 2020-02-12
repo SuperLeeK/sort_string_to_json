@@ -113,17 +113,17 @@
 #### v0.2.2
 > Add check the string with modal
 
-#### v0.2.3
+#### v0.3.0
 > Now when you update string to string id
 > you can reserved words at settings.json
 > Then using when you using inputBox
 
-#### v0.2.4
+#### v0.3.1
 > When you use reservedWords
 > Now we support regEx grammer's all
 > if you want, just add settings.json to isAll: true
 
-#### v0.2.5
+#### v0.3.2
 > If you did mistake string id's last string is space
 > Now we remove space string at last string
 > Ex)
