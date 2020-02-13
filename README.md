@@ -129,6 +129,11 @@
 > Ex)
 > prev : 'awe some project ' => 'awe_some_project_'
 > now  : 'awe some project ' => 'awe_some_project'
+
+#### v0.3.3
+> Update CheckStringIdFromString
+> if use literal string, and using ${someValue}
+> Now we can update with format on check Update
 ---
 
 # Coming Soon

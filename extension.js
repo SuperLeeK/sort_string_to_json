@@ -87,6 +87,8 @@ function activate(context) {
 
 	/** Check String */
 	let checkFromString = vscode.commands.registerCommand('extension.checkStringIdFromString', function () {
+		let isFormatFlag = false;
+		let isFormatArr = [];
 		let editor = window.activeTextEditor;
 		let editorText = editor.document.getText();
 		let selectText = editor.document.getText(editor.selection);
@@ -100,7 +102,11 @@ function activate(context) {
       return;
     };
 		let index = 1;
-		selectText = selectText.replace(/\$\{(.)+?\}/gi,(searched, ...args) => `{%${index++}}` );
+		selectText = selectText.replace(/\$\{(.)+?\}/gi,(searched, p1, ...args) => {
+			isFormatFlag = true;
+			isFormatArr.push(searched.replace('$','').replace('{','').replace('}',''));
+			return `{%${index++}}`
+		} );
 
 		clipboard.readText()
 		.then(clip => {
@@ -129,7 +135,7 @@ function activate(context) {
 					editor.edit(builder => {
 						let stringPos = editor.selection.active;
 						let startPos = new Position(stringPos.line, stringPos.character)
-						let resultText = `Strings.${pickText.replace(/\"/gi,'')}`;
+						let resultText = isFormatFlag ? `Strings.${pickText.replace(/\"/gi,'')}.format(${isFormatArr.join(',')})` : `Strings.${pickText.replace(/\"/gi,'')}`;
 						builder.replace(editor.selection, resultText)
 					})
 				})
